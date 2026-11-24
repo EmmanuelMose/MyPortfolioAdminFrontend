@@ -1,0 +1,249 @@
+.admin-drawer {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #111;
+  color: #fff;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.5);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  border-right: 1px solid #333;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.admin-drawer::-webkit-scrollbar {
+  width: 2px;
+}
+
+.admin-drawer::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.admin-drawer::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 0, 0.2);
+  border-radius: 4px;
+}
+
+.admin-drawer-open {
+  width: 260px;
+  min-width: 260px;
+}
+
+.admin-drawer-closed {
+  width: 68px;
+  min-width: 68px;
+}
+
+.admin-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0.75rem 0.75rem;
+  border-bottom: 1px solid #333;
+  flex-shrink: 0;
+}
+
+.admin-drawer-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  overflow: hidden;
+}
+
+.admin-drawer-brand-icon {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: green;
+  flex-shrink: 0;
+}
+
+.admin-drawer-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.admin-drawer-brand-highlight {
+  color: green;
+}
+
+.opacity-0 {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+.opacity-100 {
+  opacity: 1;
+}
+
+.admin-drawer-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem;
+  border-radius: 8px;
+  background: #222;
+  border: 1px solid #333;
+  color: #aaa;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  font-size: 12px;
+}
+
+.admin-drawer-toggle:hover {
+  background: #333;
+  color: green;
+  border-color: green;
+}
+
+.admin-drawer-user {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 0.75rem;
+  border-bottom: 1px solid #333;
+  flex-shrink: 0;
+}
+
+.admin-drawer-user-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: green;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.admin-drawer-user-info {
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.admin-drawer-user-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+}
+
+.admin-drawer-user-role {
+  font-size: 0.6rem;
+  color: #aaa;
+  white-space: nowrap;
+}
+
+.admin-drawer-nav {
+  flex: 1;
+  padding: 0.5rem 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  overflow-y: auto;
+}
+
+.admin-drawer-link {
+  display: flex;
+  align-items: center;
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  color: #aaa;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  cursor: pointer;
+}
+
+.admin-drawer-link:hover {
+  background: rgba(0, 255, 0, 0.08);
+  color: green;
+}
+
+.admin-drawer-link-active {
+  background: rgba(0, 255, 0, 0.1);
+  color: green;
+}
+
+.admin-drawer-link-active::before {
+  content: '';
+  position: absolute;
+  left: -0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 20px;
+  background: green;
+  border-radius: 0 3px 3px 0;
+}
+
+.admin-drawer-text {
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+.admin-drawer-footer {
+  padding: 0.5rem 0.6rem;
+  border-top: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.admin-drawer-logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem;
+  border-radius: 8px;
+  color: #ff4444;
+  background: transparent;
+  border: 1px solid #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.admin-drawer-logout:hover {
+  background: rgba(255, 68, 68, 0.1);
+  border-color: #ff4444;
+}
+
+.admin-drawer-footer-text {
+  font-size: 0.55rem;
+  color: #555;
+  text-align: center;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .admin-drawer-open {
+    width: 280px;
+    min-width: 280px;
+  }
+
+  .admin-drawer-closed {
+    width: 0;
+    min-width: 0;
+    overflow: hidden;
+  }
+}
