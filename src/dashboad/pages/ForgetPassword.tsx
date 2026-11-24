@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { forgotPassword, resetPassword } from '../../Features/auth/auth';
+import { forgotPassword, verifyResetCode, resetPassword } from '../../Features/auth/auth';
 import './ForgetPassword.css';
 
 const ForgotPassword = () => {
@@ -32,6 +32,22 @@ const ForgotPassword = () => {
     }
   };
 
+  const handleVerifyCode = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+    setLoading(true);
+    try {
+      await verifyResetCode(email, code);
+      setSuccess('Code verified successfully');
+      setStep(3);
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Invalid or expired code');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -44,7 +60,7 @@ const ForgotPassword = () => {
 
     setLoading(true);
     try {
-      await resetPassword(email, code, newPassword);
+      await resetPassword(email, newPassword);
       setSuccess('Password reset successfully. Redirecting to login...');
       setTimeout(() => navigate('/login'), 2000);
     } catch (err: any) {
@@ -62,7 +78,7 @@ const ForgotPassword = () => {
         {error && <p className="error-msg">{error}</p>}
         {success && <p className="success-msg">{success}</p>}
 
-        {step === 1 ? (
+        {step === 1 && (
           <form onSubmit={handleSendCode} className="form-step">
             <p className="step-text">Enter your email to receive a 6-digit reset code.</p>
             <input 
@@ -76,9 +92,11 @@ const ForgotPassword = () => {
               {loading ? 'Sending...' : 'Send Reset Code'}
             </button>
           </form>
-        ) : (
-          <form onSubmit={handleResetPassword} className="form-step">
-            <p className="step-text">Enter the code sent to <strong>{email}</strong> and your new password.</p>
+        )}
+
+        {step === 2 && (
+          <form onSubmit={handleVerifyCode} className="form-step">
+            <p className="step-text">Enter the 6-digit code sent to <strong>{email}</strong>.</p>
             <input 
               type="text" 
               placeholder="6-Digit Code" 
@@ -86,6 +104,15 @@ const ForgotPassword = () => {
               onChange={(e) => setCode(e.target.value)} 
               required 
             />
+            <button type="submit" disabled={loading}>
+              {loading ? 'Verifying...' : 'Verify Code'}
+            </button>
+          </form>
+        )}
+
+        {step === 3 && (
+          <form onSubmit={handleResetPassword} className="form-step">
+            <p className="step-text">Code verified. Enter your new password.</p>
             <input 
               type="password" 
               placeholder="New Password" 

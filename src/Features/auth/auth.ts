@@ -16,7 +16,12 @@ export const forgotPassword = async (email: string) => {
   return response.data;
 };
 
-export const resetPassword = async (email: string, code: string, newPassword: string) => {
-  const response = await axios.post(`${ApiDomain}/auth/reset-password`, { email, code, newPassword });
+export const verifyResetCode = async (email: string, code: string) => {
+  const response = await axios.post(`${ApiDomain}/auth/verify-reset-code`, { email, code });
+  return response.data;
+};
+
+export const resetPassword = async (email: string, newPassword: string) => {
+  const response = await axios.post(`${ApiDomain}/auth/reset-password`, { email, newPassword });
   return response.data;
 };
