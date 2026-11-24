@@ -1,0 +1,84 @@
+.landing-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #000;
+  color: #fff;
+}
+
+.landing-header {
+  padding: 20px 5%;
+  text-align: center;
+  border-bottom: 1px solid #333;
+}
+
+.landing-header h1 {
+  font-size: 24px;
+  color: #00f;
+}
+
+.landing-hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.landing-hero h2 {
+  font-size: clamp(24px, 4vw, 40px);
+  margin-bottom: 15px;
+}
+
+.landing-hero p {
+  font-size: 16px;
+  color: #ccc;
+  margin-bottom: 30px;
+  max-width: 500px;
+}
+
+.landing-actions {
+  display: flex;
+  gap: 20px;
+}
+
+.btn-primary, .btn-secondary {
+  padding: 12px 30px;
+  font-size: 16px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.btn-primary {
+  background-color: green;
+  color: #fff;
+  border: 2px solid green;
+}
+
+.btn-primary:hover {
+  background-color: transparent;
+  color: green;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: #fff;
+  border: 2px solid #fff;
+}
+
+.btn-secondary:hover {
+  background-color: #fff;
+  color: #000;
+}
+
+.landing-footer {
+  padding: 20px;
+  text-align: center;
+  border-top: 1px solid #333;
+  color: #666;
+  font-size: 14px;
+}
