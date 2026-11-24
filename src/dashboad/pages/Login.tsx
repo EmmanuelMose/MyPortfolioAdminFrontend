@@ -29,7 +29,7 @@ const Login = () => {
         {error && <p className="error-msg">{error}</p>}
         <input 
           type="email" 
-          placeholder="Email" 
+          placeholder="Email Address" 
           value={email} 
           onChange={(e) => setEmail(e.target.value)} 
           required 

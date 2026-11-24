@@ -38,7 +38,7 @@ const Register = () => {
         <input type="text" name="firstName" placeholder="First Name" onChange={handleChange} required />
         <input type="text" name="middleName" placeholder="Middle Name (Optional)" onChange={handleChange} />
         <input type="text" name="lastName" placeholder="Last Name" onChange={handleChange} required />
-        <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
+        <input type="email" name="email" placeholder="Email Address" onChange={handleChange} required />
         <input type="tel" name="phoneNumber" placeholder="Phone Number" onChange={handleChange} required />
         <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
         <button type="submit">Register</button>
