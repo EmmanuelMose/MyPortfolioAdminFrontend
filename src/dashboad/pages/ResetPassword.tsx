@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { resetPassword } from '../../Features/auth/auth';
-import './ResetPassword.css.css';
+import './ResetPassword.css';
 
 const ResetPassword = () => {
   const [formData, setFormData] = useState({
