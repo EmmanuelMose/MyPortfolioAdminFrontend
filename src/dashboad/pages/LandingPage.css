@@ -1,20 +1,60 @@
 .landing-container {
+  min-height: 100vh;
+  width: 100%;
+  background-color: #000000;
+  color: #ffffff;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  background-color: #000;
-  color: #fff;
+  position: relative;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.landing-bg-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(0, 255, 0, 0.08), transparent 50%);
+  pointer-events: none;
 }
 
 .landing-header {
-  padding: 20px 5%;
-  text-align: center;
-  border-bottom: 1px solid #333;
+  padding: 1.5rem 6%;
+  border-bottom: 1px solid #222222;
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 10;
+  backdrop-filter: blur(12px);
 }
 
-.landing-header h1 {
-  font-size: 24px;
-  color: #00f;
+.landing-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.landing-logo-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #00ff00;
+  color: #000000;
+  font-weight: 800;
+  font-size: 18px;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+}
+
+.landing-logo-text {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.landing-logo-accent {
+  color: #00ff00;
 }
 
 .landing-hero {
@@ -24,61 +64,204 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 20px;
+  padding: 60px 6% 40px;
+  position: relative;
+  z-index: 10;
+}
+
+.landing-badge {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: #00ff00;
+  background: rgba(0, 255, 0, 0.08);
+  border: 1px solid rgba(0, 255, 0, 0.2);
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  animation: fadeInDown 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .landing-hero h2 {
-  font-size: clamp(24px, 4vw, 40px);
-  margin-bottom: 15px;
+  font-size: clamp(32px, 5vw, 56px);
+  margin: 0 0 20px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.1;
+  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
 }
 
-.landing-hero p {
-  font-size: 16px;
-  color: #ccc;
-  margin-bottom: 30px;
-  max-width: 500px;
+.landing-hero > p {
+  font-size: clamp(15px, 2vw, 18px);
+  color: #a1a1aa;
+  margin: 0 0 40px;
+  max-width: 600px;
+  line-height: 1.6;
+  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .landing-actions {
   display: flex;
   gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
 }
 
 .btn-primary, .btn-secondary {
-  padding: 12px 30px;
+  padding: 14px 36px;
   font-size: 16px;
-  border-radius: 5px;
+  border-radius: 10px;
   text-decoration: none;
-  font-weight: 600;
-  transition: 0.3s ease;
+  font-weight: 700;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
 }
 
 .btn-primary {
-  background-color: green;
-  color: #fff;
-  border: 2px solid green;
+  background: #00ff00;
+  color: #000000;
+  border: 1px solid #00ff00;
+  box-shadow: 0 4px 20px rgba(0, 255, 0, 0.3);
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left 0.5s ease;
 }
 
 .btn-primary:hover {
-  background-color: transparent;
-  color: green;
+  transform: translateY(-3px);
+  background: #00cc00;
+  box-shadow: 0 10px 30px rgba(0, 255, 0, 0.4);
+}
+
+.btn-primary:hover::before {
+  left: 100%;
 }
 
 .btn-secondary {
-  background-color: transparent;
-  color: #fff;
-  border: 2px solid #fff;
+  background: rgba(255, 255, 255, 0.03);
+  color: #ffffff;
+  border: 1px solid #333333;
 }
 
 .btn-secondary:hover {
-  background-color: #fff;
-  color: #000;
+  transform: translateY(-3px);
+  border-color: #00ff00;
+  color: #00ff00;
+  background: rgba(0, 255, 0, 0.05);
+  box-shadow: 0 10px 30px rgba(0, 255, 0, 0.1);
+}
+
+.landing-features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 1000px;
+  width: 100%;
+  margin-top: 80px;
+  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+}
+
+.landing-feature {
+  background: #0a0a0a;
+  border: 1px solid #222222;
+  border-radius: 16px;
+  padding: 32px 24px;
+  text-align: left;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.landing-feature::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00ff00, transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.landing-feature:hover {
+  transform: translateY(-5px);
+  border-color: rgba(0, 255, 0, 0.3);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 255, 0, 0.05);
+}
+
+.landing-feature:hover::before {
+  opacity: 1;
+}
+
+.landing-feature-icon {
+  font-size: 14px;
+  font-weight: 800;
+  color: #00ff00;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+
+.landing-feature h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 10px;
+  color: #ffffff;
+}
+
+.landing-feature p {
+  font-size: 14px;
+  color: #888888;
+  line-height: 1.6;
+  margin: 0;
 }
 
 .landing-footer {
-  padding: 20px;
+  padding: 24px 6%;
   text-align: center;
-  border-top: 1px solid #333;
-  color: #666;
-  font-size: 14px;
+  border-top: 1px solid #222222;
+  color: #555555;
+  font-size: 13px;
+  position: relative;
+  z-index: 10;
+}
+
+@media (max-width: 900px) {
+  .landing-features {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+    margin-top: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .landing-actions {
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+  }
+  .btn-primary, .btn-secondary {
+    text-align: center;
+    width: 100%;
+  }
 }
