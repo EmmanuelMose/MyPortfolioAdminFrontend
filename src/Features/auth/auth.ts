@@ -21,7 +21,7 @@ export const verifyResetCode = async (email: string, code: string) => {
   return response.data;
 };
 
-export const resetPassword = async (email: string, newPassword: string) => {
+export const resetPassword = async (email: string, newPassword: string, newPassword: string) => {
   const response = await axios.post(`${ApiDomain}/auth/reset-password`, { email, newPassword });
   return response.data;
 };
