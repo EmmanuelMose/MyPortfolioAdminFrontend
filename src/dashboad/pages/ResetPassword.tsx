@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { verifyResetCode, resetPassword } from "../../Features/auth/auth";
-import { Eye, EyeOff, Lock, Mail, Key, ArrowLeft, Shield } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail, Key, ArrowLeft } from "lucide-react";
 import "./ResetPassword.css";
 
 type ResetForm = {
@@ -43,17 +43,11 @@ const ResetPassword = () => {
       <div className="reset-wrapper">
         <div className="reset-card">
           <button type="button" onClick={() => navigate("/login")} className="reset-back-btn">
-            <ArrowLeft size={18} />
+            <ArrowLeft size={14} />
             Back to Login
           </button>
 
           <div className="reset-header">
-            <div className="reset-logo">
-              <Shield className="reset-logo-icon" size={24} />
-              <span className="reset-logo-text">
-                Admin<span className="reset-logo-highlight">Panel</span>
-              </span>
-            </div>
             <h2 className="reset-title">Reset Password</h2>
             <p className="reset-subtitle">Enter your details to reset your password</p>
           </div>
@@ -64,7 +58,7 @@ const ResetPassword = () => {
             <div className="reset-form-group">
               <label htmlFor="email">Email Address</label>
               <div className={`reset-input-wrapper ${errors.email ? "has-error" : ""}`}>
-                <Mail className="reset-input-icon" size={18} />
+                <Mail className="reset-input-icon" size={14} />
                 <input
                   type="email"
                   id="email"
@@ -84,7 +78,7 @@ const ResetPassword = () => {
             <div className="reset-form-group">
               <label htmlFor="code">6-Digit Code</label>
               <div className={`reset-input-wrapper ${errors.code ? "has-error" : ""}`}>
-                <Key className="reset-input-icon" size={18} />
+                <Key className="reset-input-icon" size={14} />
                 <input
                   type="text"
                   id="code"
@@ -102,7 +96,7 @@ const ResetPassword = () => {
             <div className="reset-form-group">
               <label htmlFor="newPassword">New Password</label>
               <div className={`reset-input-wrapper ${errors.newPassword ? "has-error" : ""}`}>
-                <Lock className="reset-input-icon" size={18} />
+                <Lock className="reset-input-icon" size={14} />
                 <input
                   type={showPassword ? "text" : "password"}
                   id="newPassword"
@@ -122,7 +116,7 @@ const ResetPassword = () => {
                   onClick={() => setShowPassword((p) => !p)}
                   aria-label="Toggle password"
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                 </button>
               </div>
               {errors.newPassword && <span className="reset-error-text">{errors.newPassword.message}</span>}
