@@ -5,54 +5,89 @@ import "./LandingPage.css";
 const LandingPage = () => {
   return (
     <div className="landing-container">
-      <div className="landing-bg-glow" />
       <div className="landing-grid" />
 
       <header className="landing-header">
         <div className="landing-logo">
-          <span className="landing-logo-mark">A</span>
           <span className="landing-logo-text">
-            Admin<span className="landing-logo-accent">Panel</span>
+            Emmanuel Guru <span className="landing-logo-accent">Admin Panel</span>
           </span>
         </div>
-        <nav className="landing-nav">
-          <Link to="/login" className="landing-nav-link">Sign In</Link>
-          <Link to="/register" className="landing-nav-btn">Get Started</Link>
-        </nav>
+        <Link to="/register" className="landing-nav-btn">
+          Get Started
+        </Link>
       </header>
 
-      <main className="landing-hero">
-        <div className="landing-badge">
-          <Shield size={14} /> PORTFOLIO MANAGEMENT
-        </div>
-        <h1 className="landing-title">
-          Emmanuel&apos;s <span>Portfolio</span> Admin
-        </h1>
-        <p className="landing-description">
-          Manage your content, projects, and download requests securely from one powerful dashboard.
-        </p>
-        <div className="landing-actions">
-          <Link to="/login" className="btn-primary">Sign In</Link>
-          <Link to="/register" className="btn-secondary">Register</Link>
-        </div>
+      <main className="landing-main">
+        <section className="landing-hero">
+          <div className="landing-badge">
+            <Shield size={14} />
+            PORTFOLIO MANAGEMENT
+          </div>
 
-        <div className="landing-features">
+          <h1 className="landing-title">
+            Emmanuel&apos;s <span>Portfolio</span> Admin
+          </h1>
+
+          <p className="landing-description">
+            A secure, invitation-only dashboard built to manage your portfolio
+            content, projects, certifications, and download requests — all from
+            one powerful place. Sign in to take full control of everything you
+            publish.
+          </p>
+
+          <div className="landing-stats">
+            <div className="landing-stat">
+              <span className="landing-stat-value">50+</span>
+              <span className="landing-stat-label">Projects Managed</span>
+            </div>
+            <div className="landing-stat-divider" />
+            <div className="landing-stat">
+              <span className="landing-stat-value">20+</span>
+              <span className="landing-stat-label">Certifications</span>
+            </div>
+            <div className="landing-stat-divider" />
+            <div className="landing-stat">
+              <span className="landing-stat-value">500+</span>
+              <span className="landing-stat-label">Downloads Approved</span>
+            </div>
+          </div>
+        </section>
+
+        <section className="landing-features">
           <div className="landing-feature">
-            <div className="landing-feature-icon"><Layers size={22} /></div>
+            <div className="landing-feature-icon">
+              <Layers size={22} />
+            </div>
             <h3>Content Control</h3>
-            <p>Manage projects, certifications, and profile from one place</p>
+            <p>
+              Manage projects, certifications, and profile details from a
+              single unified dashboard. Everything you publish lives here.
+            </p>
           </div>
+
           <div className="landing-feature">
-            <div className="landing-feature-icon"><Lock size={22} /></div>
+            <div className="landing-feature-icon">
+              <Lock size={22} />
+            </div>
             <h3>Secure Access</h3>
-            <p>Role-based authentication with invitation-only registration</p>
+            <p>
+              Role-based authentication with invitation-only registration so
+              only trusted admins can reach sensitive areas.
+            </p>
           </div>
+
           <div className="landing-feature">
-            <div className="landing-feature-icon"><Activity size={22} /></div>
+            <div className="landing-feature-icon">
+              <Activity size={22} />
+            </div>
             <h3>Activity Logs</h3>
-            <p>Track every action taken across the admin panel</p>
+            <p>
+              Every login, edit, and download approval is tracked so you always
+              know exactly what changed and who did it.
+            </p>
           </div>
-        </div>
+        </section>
       </main>
 
       <footer className="landing-footer">
