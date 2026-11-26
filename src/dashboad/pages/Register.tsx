@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { registerUser } from "../../Features/auth/auth";
-import { Eye, EyeOff, Mail, Lock, User, Phone, ArrowLeft, Shield } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, User, Phone, ArrowLeft } from "lucide-react";
 import registerHero from "../../assets/images/register-hero.jpg";
 import "./Register.css";
 
@@ -13,25 +13,31 @@ type RegisterForm = {
   email: string;
   phoneNumber: string;
   password: string;
+  confirmPassword: string;
 };
 
 const Register = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<RegisterForm>({ mode: "onTouched" });
+
+  const password = watch("password");
 
   const onSubmit = async (data: RegisterForm) => {
     setError("");
     setLoading(true);
     try {
-      await registerUser(data);
+      const { confirmPassword, ...payload } = data;
+      await registerUser(payload);
       navigate("/login");
     } catch (err: any) {
       setError(err.response?.data?.message || "Registration failed");
@@ -48,28 +54,21 @@ const Register = () => {
           <img src={registerHero} alt="Join us" className="register-image" />
           <div className="register-image-overlay" />
           <div className="register-image-text">
-            <Shield className="register-image-icon" size={32} />
-            <h2>Join the</h2>
-            <h1>Admin<span>Panel</span></h1>
-            <p>Create your account and take control of your portfolio</p>
+            <h1>
+              Create your <span>Account</span>
+            </h1>
           </div>
         </div>
 
         <div className="register-form-side">
-          <button type="button" onClick={() => navigate("/")} className="register-back-btn">
-            <ArrowLeft size={18} />
+          <button
+            type="button"
+            onClick={() => navigate("/")}
+            className="register-back-btn"
+          >
+            <ArrowLeft size={14} />
             Back to Home
           </button>
-
-          <div className="register-header">
-            <div className="register-logo">
-              <span className="register-logo-text">
-                Admin<span className="register-logo-highlight">Panel</span>
-              </span>
-            </div>
-            <h2 className="register-title">Create Account</h2>
-            <p className="register-subtitle">Register to start managing your portfolio</p>
-          </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="register-form" noValidate>
             {error && <div className="register-error">{error}</div>}
@@ -78,7 +77,7 @@ const Register = () => {
               <div className="register-form-group">
                 <label htmlFor="firstName">First Name</label>
                 <div className={`register-input-wrapper ${errors.firstName ? "has-error" : ""}`}>
-                  <User className="register-input-icon" size={18} />
+                  <User className="register-input-icon" size={14} />
                   <input
                     type="text"
                     id="firstName"
@@ -89,13 +88,15 @@ const Register = () => {
                     })}
                   />
                 </div>
-                {errors.firstName && <span className="register-error-text">{errors.firstName.message}</span>}
+                {errors.firstName && (
+                  <span className="register-error-text">{errors.firstName.message}</span>
+                )}
               </div>
 
               <div className="register-form-group">
                 <label htmlFor="lastName">Last Name</label>
                 <div className={`register-input-wrapper ${errors.lastName ? "has-error" : ""}`}>
-                  <User className="register-input-icon" size={18} />
+                  <User className="register-input-icon" size={14} />
                   <input
                     type="text"
                     id="lastName"
@@ -106,14 +107,18 @@ const Register = () => {
                     })}
                   />
                 </div>
-                {errors.lastName && <span className="register-error-text">{errors.lastName.message}</span>}
+                {errors.lastName && (
+                  <span className="register-error-text">{errors.lastName.message}</span>
+                )}
               </div>
             </div>
 
             <div className="register-form-group">
-              <label htmlFor="middleName">Middle Name <span className="optional">(Optional)</span></label>
+              <label htmlFor="middleName">
+                Middle Name <span className="optional">(Optional)</span>
+              </label>
               <div className="register-input-wrapper">
-                <User className="register-input-icon" size={18} />
+                <User className="register-input-icon" size={14} />
                 <input
                   type="text"
                   id="middleName"
@@ -126,7 +131,7 @@ const Register = () => {
             <div className="register-form-group">
               <label htmlFor="email">Email Address</label>
               <div className={`register-input-wrapper ${errors.email ? "has-error" : ""}`}>
-                <Mail className="register-input-icon" size={18} />
+                <Mail className="register-input-icon" size={14} />
                 <input
                   type="email"
                   id="email"
@@ -140,13 +145,15 @@ const Register = () => {
                   })}
                 />
               </div>
-              {errors.email && <span className="register-error-text">{errors.email.message}</span>}
+              {errors.email && (
+                <span className="register-error-text">{errors.email.message}</span>
+              )}
             </div>
 
             <div className="register-form-group">
               <label htmlFor="phoneNumber">Phone Number</label>
               <div className={`register-input-wrapper ${errors.phoneNumber ? "has-error" : ""}`}>
-                <Phone className="register-input-icon" size={18} />
+                <Phone className="register-input-icon" size={14} />
                 <input
                   type="tel"
                   id="phoneNumber"
@@ -160,13 +167,15 @@ const Register = () => {
                   })}
                 />
               </div>
-              {errors.phoneNumber && <span className="register-error-text">{errors.phoneNumber.message}</span>}
+              {errors.phoneNumber && (
+                <span className="register-error-text">{errors.phoneNumber.message}</span>
+              )}
             </div>
 
             <div className="register-form-group">
               <label htmlFor="password">Password</label>
               <div className={`register-input-wrapper ${errors.password ? "has-error" : ""}`}>
-                <Lock className="register-input-icon" size={18} />
+                <Lock className="register-input-icon" size={14} />
                 <input
                   type={showPassword ? "text" : "password"}
                   id="password"
@@ -186,10 +195,39 @@ const Register = () => {
                   onClick={() => setShowPassword((p) => !p)}
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                 </button>
               </div>
-              {errors.password && <span className="register-error-text">{errors.password.message}</span>}
+              {errors.password && (
+                <span className="register-error-text">{errors.password.message}</span>
+              )}
+            </div>
+
+            <div className="register-form-group">
+              <label htmlFor="confirmPassword">Confirm Password</label>
+              <div className={`register-input-wrapper ${errors.confirmPassword ? "has-error" : ""}`}>
+                <Lock className="register-input-icon" size={14} />
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  id="confirmPassword"
+                  placeholder="Re-enter your password"
+                  {...register("confirmPassword", {
+                    required: "Please confirm your password",
+                    validate: (value) => value === password || "Passwords do not match",
+                  })}
+                />
+                <button
+                  type="button"
+                  className="register-password-toggle"
+                  onClick={() => setShowConfirmPassword((p) => !p)}
+                  aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                >
+                  {showConfirmPassword ? <EyeOff size={14} /> : <Eye size={14} />}
+                </button>
+              </div>
+              {errors.confirmPassword && (
+                <span className="register-error-text">{errors.confirmPassword.message}</span>
+              )}
             </div>
 
             <button type="submit" className="btn-primary" disabled={loading}>
