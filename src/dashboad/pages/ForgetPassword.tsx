@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { forgotPassword, verifyResetCode, resetPassword } from "../../Features/auth/auth";
-import { Mail, Key, Lock, Eye, EyeOff, ArrowLeft, Shield, CheckCircle } from "lucide-react";
+import { Mail, Key, Lock, Eye, EyeOff, ArrowLeft, CheckCircle } from "lucide-react";
 import "./ForgetPassword.css";
 
 const ForgotPassword = () => {
@@ -75,17 +75,11 @@ const ForgotPassword = () => {
       <div className="forgot-wrapper">
         <div className="forgot-card">
           <button type="button" onClick={() => navigate("/login")} className="forgot-back-btn">
-            <ArrowLeft size={18} />
+            <ArrowLeft size={14} />
             Back to Login
           </button>
 
           <div className="forgot-header">
-            <div className="forgot-logo">
-              <Shield className="forgot-logo-icon" size={24} />
-              <span className="forgot-logo-text">
-                Admin<span className="forgot-logo-highlight">Panel</span>
-              </span>
-            </div>
             <h2 className="forgot-title">Forgot Password</h2>
             <p className="forgot-subtitle">Reset your admin account password</p>
           </div>
@@ -96,7 +90,7 @@ const ForgotPassword = () => {
             <div className={`forgot-step ${step >= 2 ? "active" : ""}`}>2</div>
             <div className={`forgot-step-line ${step >= 3 ? "active" : ""}`} />
             <div className={`forgot-step ${step >= 3 ? "active" : ""}`}>
-              {step > 3 ? <CheckCircle size={16} /> : 3}
+              {step > 3 ? <CheckCircle size={14} /> : 3}
             </div>
           </div>
 
@@ -109,7 +103,7 @@ const ForgotPassword = () => {
               <div className="forgot-form-group">
                 <label htmlFor="email">Email Address</label>
                 <div className={`forgot-input-wrapper ${step1.formState.errors.email ? "has-error" : ""}`}>
-                  <Mail className="forgot-input-icon" size={18} />
+                  <Mail className="forgot-input-icon" size={14} />
                   <input
                     type="email"
                     id="email"
@@ -141,7 +135,7 @@ const ForgotPassword = () => {
               <div className="forgot-form-group">
                 <label htmlFor="code">Reset Code</label>
                 <div className={`forgot-input-wrapper ${step2.formState.errors.code ? "has-error" : ""}`}>
-                  <Key className="forgot-input-icon" size={18} />
+                  <Key className="forgot-input-icon" size={14} />
                   <input
                     type="text"
                     id="code"
@@ -172,7 +166,7 @@ const ForgotPassword = () => {
               <div className="forgot-form-group">
                 <label htmlFor="newPassword">New Password</label>
                 <div className={`forgot-input-wrapper ${step3.formState.errors.newPassword ? "has-error" : ""}`}>
-                  <Lock className="forgot-input-icon" size={18} />
+                  <Lock className="forgot-input-icon" size={14} />
                   <input
                     type={showPassword ? "text" : "password"}
                     id="newPassword"
@@ -192,7 +186,7 @@ const ForgotPassword = () => {
                     onClick={() => setShowPassword((p) => !p)}
                     aria-label="Toggle password"
                   >
-                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                   </button>
                 </div>
                 {step3.formState.errors.newPassword && (
@@ -203,7 +197,7 @@ const ForgotPassword = () => {
               <div className="forgot-form-group">
                 <label htmlFor="confirmPassword">Confirm Password</label>
                 <div className={`forgot-input-wrapper ${step3.formState.errors.confirmPassword ? "has-error" : ""}`}>
-                  <Lock className="forgot-input-icon" size={18} />
+                  <Lock className="forgot-input-icon" size={14} />
                   <input
                     type={showConfirm ? "text" : "password"}
                     id="confirmPassword"
@@ -218,7 +212,7 @@ const ForgotPassword = () => {
                     onClick={() => setShowConfirm((p) => !p)}
                     aria-label="Toggle confirm password"
                   >
-                    {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
+                    {showConfirm ? <EyeOff size={14} /> : <Eye size={14} />}
                   </button>
                 </div>
                 {step3.formState.errors.confirmPassword && (
