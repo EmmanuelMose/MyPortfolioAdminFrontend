@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { loginUser } from "../../Features/auth/auth";
 import { useAuth } from "../../context/AuthContext";
-import { Eye, EyeOff, Mail, Lock, ArrowLeft, Shield } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, ArrowLeft } from "lucide-react";
 import loginHero from "../../assets/images/login-hero.jpg";
 import "./Login.css";
 
@@ -44,28 +44,21 @@ const Login = () => {
           <img src={loginHero} alt="Admin portal" className="login-image" />
           <div className="login-image-overlay" />
           <div className="login-image-text">
-            <Shield className="login-image-icon" size={32} />
-            <h2>Welcome Back to</h2>
-            <h1>Admin<span>Panel</span></h1>
-            <p>Your all-in-one portfolio management platform</p>
+            <h1>
+              Welcome to <span>Admin Panel</span>
+            </h1>
           </div>
         </div>
 
         <div className="login-form-side">
-          <button type="button" onClick={() => navigate("/")} className="login-back-btn">
-            <ArrowLeft size={18} />
+          <button
+            type="button"
+            onClick={() => navigate("/")}
+            className="login-back-btn"
+          >
+            <ArrowLeft size={14} />
             Back to Home
           </button>
-
-          <div className="login-header">
-            <div className="login-logo">
-              <span className="login-logo-text">
-                Admin<span className="login-logo-highlight">Panel</span>
-              </span>
-            </div>
-            <h2 className="login-title">Welcome Back</h2>
-            <p className="login-subtitle">Sign in to your admin account</p>
-          </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="login-form" noValidate>
             {error && <div className="login-error">{error}</div>}
@@ -73,7 +66,7 @@ const Login = () => {
             <div className="login-form-group">
               <label htmlFor="email">Email Address</label>
               <div className={`login-input-wrapper ${errors.email ? "has-error" : ""}`}>
-                <Mail className="login-input-icon" size={18} />
+                <Mail className="login-input-icon" size={14} />
                 <input
                   type="email"
                   id="email"
@@ -87,20 +80,25 @@ const Login = () => {
                   })}
                 />
               </div>
-              {errors.email && <span className="login-error-text">{errors.email.message}</span>}
+              {errors.email && (
+                <span className="login-error-text">{errors.email.message}</span>
+              )}
             </div>
 
             <div className="login-form-group">
               <label htmlFor="password">Password</label>
               <div className={`login-input-wrapper ${errors.password ? "has-error" : ""}`}>
-                <Lock className="login-input-icon" size={18} />
+                <Lock className="login-input-icon" size={14} />
                 <input
                   type={showPassword ? "text" : "password"}
                   id="password"
                   placeholder="Enter your password"
                   {...register("password", {
                     required: "Password is required",
-                    minLength: { value: 6, message: "Password must be at least 6 characters" },
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters",
+                    },
                   })}
                 />
                 <button
@@ -109,10 +107,12 @@ const Login = () => {
                   onClick={() => setShowPassword((p) => !p)}
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                 </button>
               </div>
-              {errors.password && <span className="login-error-text">{errors.password.message}</span>}
+              {errors.password && (
+                <span className="login-error-text">{errors.password.message}</span>
+              )}
             </div>
 
             <div className="login-options">
