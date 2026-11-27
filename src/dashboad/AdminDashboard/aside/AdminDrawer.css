@@ -326,4 +326,10 @@
     min-width: 0;
     overflow: hidden;
   }
+
+  .admin-dashboard-drawer-wrapper.mobile-open .admin-drawer-closed {
+    width: 280px;
+    min-width: 280px;
+    overflow-y: auto;
+  }
 }

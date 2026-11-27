@@ -16,7 +16,7 @@ const AdminDashboard = () => {
       if (window.innerWidth > 1024) {
         setIsMobileOpen(false);
         setIsDrawerOpen(true);
-      } else if (window.innerWidth <= 1024) {
+      } else {
         setIsDrawerOpen(false);
       }
     };
@@ -57,7 +57,7 @@ const AdminDashboard = () => {
 
       <div className={`admin-dashboard-drawer-wrapper ${isMobileOpen ? "mobile-open" : ""}`}>
         <AdminDrawer
-          isSidebarOpen={isDrawerOpen}
+          isSidebarOpen={isMobileOpen ? true : isDrawerOpen}
           onToggle={toggleDrawer}
           onCloseMobile={() => setIsMobileOpen(false)}
           onLogout={handleLogout}
@@ -67,7 +67,12 @@ const AdminDashboard = () => {
       <div className="admin-dashboard-main">
         <header className="admin-dashboard-header">
           <div className="admin-dashboard-header-left">
-            <button onClick={toggleDrawer} className="admin-dashboard-menu-btn" aria-label="Toggle menu">
+            <button
+              onClick={toggleDrawer}
+              className="admin-dashboard-menu-btn"
+              aria-label="Toggle menu"
+              aria-expanded={isMobileOpen || isDrawerOpen}
+            >
               <span />
               <span />
               <span />
