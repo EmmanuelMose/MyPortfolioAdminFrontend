@@ -24,4 +24,10 @@ export const adminDrawerData: DrawerData[] = [
     link: "/dashboard/hero-skills",
     roles: ["super_admin", "admin"],
   },
+  {
+    id: "social-links",
+    name: "Social Links",
+    link: "/dashboard/social-links",
+    roles: ["super_admin", "admin"],
+  },
 ];
