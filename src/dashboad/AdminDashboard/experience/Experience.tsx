@@ -40,6 +40,21 @@ const emptyForm = {
   displayOrder: 0,
 };
 
+const MONTH_NAMES = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
 const extractMessage = (err: any, fallback: string) => {
   const status = err?.response?.status;
   const serverMessage = err?.response?.data?.message;
@@ -49,11 +64,50 @@ const extractMessage = (err: any, fallback: string) => {
   return fallback;
 };
 
+const formatDatePart = (raw?: string | null): string => {
+  if (!raw) return "";
+  const trimmed = String(raw).trim();
+  if (!trimmed) return "";
+
+  if (/^\d{4}$/.test(trimmed)) return trimmed;
+
+  if (/^\d{4}-\d{1,2}$/.test(trimmed)) {
+    const [year, month] = trimmed.split("-");
+    const monthNum = parseInt(month, 10);
+    if (monthNum >= 1 && monthNum <= 12) {
+      return `${MONTH_NAMES[monthNum - 1]} ${year}`;
+    }
+    return `${year}-${month}`;
+  }
+
+  return trimmed;
+};
+
 const formatPeriod = (start?: string | null, end?: string | null) => {
-  if (!start && !end) return "—";
-  if (start && !end) return `${start} — Present`;
-  if (!start && end) return `— ${end}`;
-  return `${start} — ${end}`;
+  const s = formatDatePart(start);
+  const e = formatDatePart(end);
+
+  if (!s && !e) return "—";
+  if (s && !e) return `From ${s} — To Present`;
+  if (!s && e) return `To ${e}`;
+  return `From ${s} — To ${e}`;
+};
+
+const normalizeDateInput = (value: string): string => {
+  const trimmed = value.trim();
+  if (!trimmed) return "";
+
+  if (/^\d{4}$/.test(trimmed)) return trimmed;
+
+  if (/^\d{4}-\d{1,2}$/.test(trimmed)) {
+    const [year, month] = trimmed.split("-");
+    const monthNum = parseInt(month, 10);
+    if (monthNum >= 1 && monthNum <= 12) {
+      return `${year}-${String(monthNum).padStart(2, "0")}`;
+    }
+  }
+
+  return trimmed;
 };
 
 const Experience = () => {
@@ -118,10 +172,14 @@ const Experience = () => {
 
     if (!companyName) return toast.error("Company name is required");
     if (!roleTitle) return toast.error("Role title is required");
-    if (form.startDate && !/^\d{4}(-\d{2})?$/.test(form.startDate.trim())) {
+
+    const startDate = normalizeDateInput(form.startDate);
+    const endDate = normalizeDateInput(form.endDate);
+
+    if (startDate && !/^\d{4}(-\d{2})?$/.test(startDate)) {
       return toast.error("Start date must be YYYY-MM or YYYY");
     }
-    if (form.endDate && !/^\d{4}(-\d{2})?$/.test(form.endDate.trim())) {
+    if (endDate && !/^\d{4}(-\d{2})?$/.test(endDate)) {
       return toast.error("End date must be YYYY-MM or YYYY");
     }
 
@@ -131,8 +189,8 @@ const Experience = () => {
         companyName,
         roleTitle,
         description: form.description.trim() || null,
-        startDate: form.startDate.trim() || null,
-        endDate: form.endDate.trim() || null,
+        startDate: startDate || null,
+        endDate: endDate || null,
         displayOrder: form.displayOrder,
       };
 
@@ -236,10 +294,15 @@ const Experience = () => {
                   type="text"
                   value={form.startDate}
                   onChange={(e) => setForm({ ...form, startDate: e.target.value })}
-                  placeholder="YYYY-MM (e.g. 2022-03)"
+                  placeholder="YYYY-MM (e.g. 2022-03) or YYYY"
                   disabled={saving}
                 />
               </div>
+              {form.startDate && (
+                <span className="exp-date-hint">
+                  {formatDatePart(normalizeDateInput(form.startDate)) || "—"}
+                </span>
+              )}
             </div>
 
             <div className="exp-field">
@@ -254,6 +317,11 @@ const Experience = () => {
                   disabled={saving}
                 />
               </div>
+              {form.endDate && (
+                <span className="exp-date-hint">
+                  {formatDatePart(normalizeDateInput(form.endDate)) || "—"}
+                </span>
+              )}
             </div>
 
             <div className="exp-field">
