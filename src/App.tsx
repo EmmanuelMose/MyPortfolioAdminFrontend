@@ -11,6 +11,7 @@ import AdminDashboard from "./dashboad/AdminDashboard/AdminDashboard";
 import HeroProfile from "./dashboad/AdminDashboard/hero-profile/HeroProfile";
 import HeroSkills from "./dashboad/AdminDashboard/hero-skills/HeroSkills";
 import SocialLinks from "./dashboad/AdminDashboard/social-links/SocialLinks";
+import Experience from "./dashboad/AdminDashboard/experience/Experience";
 import Admins from "./dashboad/AdminDashboard/admins/Admins";
 
 const ProtectedRoute = () => {
@@ -43,6 +44,7 @@ const routes = [
           { path: "hero", element: <HeroProfile /> },
           { path: "hero-skills", element: <HeroSkills /> },
           { path: "social-links", element: <SocialLinks /> },
+          { path: "experience", element: <Experience /> },
           {
             element: <RoleRoute roles={["super_admin"]} />,
             children: [
