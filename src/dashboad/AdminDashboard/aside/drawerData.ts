@@ -7,15 +7,16 @@ export type DrawerData = {
 
 export const adminDrawerData: DrawerData[] = [
   {
-    id: "hero",
-    name: "Hero Profile",
-    link: "/dashboard/hero",
-    roles: ["super_admin", "admin"],
-  },
-  {
     id: "admins",
     name: "Manage Admins",
     link: "/dashboard/admins",
     roles: ["super_admin"],
   },
+  {
+    id: "hero",
+    name: "Hero Profile",
+    link: "/dashboard/hero",
+    roles: ["super_admin", "admin"],
+  },
+  
 ];
