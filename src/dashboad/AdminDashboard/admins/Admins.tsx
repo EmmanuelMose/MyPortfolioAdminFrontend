@@ -3,10 +3,12 @@ import { toast } from "sonner";
 import {
   listAdmins,
   inviteAdmin,
+  updateAdmin,
   toggleAdminPermission,
   toggleAdminActive,
   deleteAdmin,
   deleteInvite,
+  resendVerification,
 } from "../../../Features/admins/admins";
 import {
   UserPlus,
@@ -20,6 +22,9 @@ import {
   Clock,
   X,
   Loader2,
+  Pencil,
+  Send,
+  Save,
 } from "lucide-react";
 import "./Admins.css";
 
@@ -33,6 +38,7 @@ type RegisteredAdmin = {
   role: "super_admin" | "admin";
   canApproveDownloads: boolean;
   isActive: boolean;
+  isCodeVerified: boolean;
   lastLogin?: string | null;
   createdAt?: string;
 };
@@ -75,16 +81,21 @@ const Admins = () => {
     email: string;
   } | null>(null);
   const [busyId, setBusyId] = useState<number | null>(null);
+  const [editTarget, setEditTarget] = useState<RegisteredAdmin | null>(null);
+  const [editForm, setEditForm] = useState({
+    firstName: "",
+    middleName: "",
+    lastName: "",
+    phoneNumber: "",
+  });
+  const [savingEdit, setSavingEdit] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
     try {
       const response = await listAdmins();
-      if (response?.success && response.data) {
-        setData(response.data);
-      } else {
-        toast.error("Unexpected response from server");
-      }
+      if (response?.success && response.data) setData(response.data);
+      else toast.error("Unexpected response from server");
     } catch (err: any) {
       toast.error(extractMessage(err, "Failed to load admins"));
     } finally {
@@ -99,10 +110,7 @@ const Admins = () => {
   const handleInvite = async (e: React.FormEvent) => {
     e.preventDefault();
     const trimmed = email.trim().toLowerCase();
-    if (!trimmed) {
-      toast.error("Enter an email address");
-      return;
-    }
+    if (!trimmed) return toast.error("Enter an email address");
 
     setInviting(true);
     try {
@@ -117,13 +125,40 @@ const Admins = () => {
     }
   };
 
+  const openEdit = (admin: RegisteredAdmin) => {
+    setEditTarget(admin);
+    setEditForm({
+      firstName: admin.firstName || "",
+      middleName: admin.middleName || "",
+      lastName: admin.lastName || "",
+      phoneNumber: admin.phoneNumber || "",
+    });
+  };
+
+  const handleSaveEdit = async () => {
+    if (!editTarget) return;
+    setSavingEdit(true);
+    try {
+      await updateAdmin(editTarget.id, {
+        firstName: editForm.firstName.trim(),
+        middleName: editForm.middleName.trim() || null,
+        lastName: editForm.lastName.trim(),
+        phoneNumber: editForm.phoneNumber.trim(),
+      });
+      toast.success("Admin updated successfully");
+      setEditTarget(null);
+      await load();
+    } catch (err: any) {
+      toast.error(extractMessage(err, "Failed to update admin"));
+    } finally {
+      setSavingEdit(false);
+    }
+  };
+
   const handleTogglePermission = async (admin: RegisteredAdmin) => {
     setBusyId(admin.id);
     try {
-      const response = await toggleAdminPermission(
-        admin.id,
-        !admin.canApproveDownloads
-      );
+      const response = await toggleAdminPermission(admin.id, !admin.canApproveDownloads);
       toast.success(response?.message || "Permission updated");
       await load();
     } catch (err: any) {
@@ -146,10 +181,21 @@ const Admins = () => {
     }
   };
 
+  const handleResend = async (admin: RegisteredAdmin) => {
+    setBusyId(admin.id);
+    try {
+      const response = await resendVerification(admin.email);
+      toast.success(response?.message || "Verification code resent");
+    } catch (err: any) {
+      toast.error(extractMessage(err, "Failed to resend code"));
+    } finally {
+      setBusyId(null);
+    }
+  };
+
   const handleDelete = async () => {
     if (!confirmDelete) return;
     const { type, id } = confirmDelete;
-
     try {
       const response =
         type === "admin" ? await deleteAdmin(id) : await deleteInvite(id);
@@ -170,7 +216,7 @@ const Admins = () => {
         <div>
           <h2>Manage Admins</h2>
           <p className="admins-subtitle">
-            Invite, activate, or revoke access for portfolio administrators
+            Invite, edit, activate, or revoke access for portfolio administrators
           </p>
         </div>
         <div className="admins-stats">
@@ -196,11 +242,7 @@ const Admins = () => {
           />
         </div>
         <button type="submit" className="admins-invite-btn" disabled={inviting}>
-          {inviting ? (
-            <Loader2 size={15} className="admins-spin" />
-          ) : (
-            <UserPlus size={15} />
-          )}
+          {inviting ? <Loader2 size={15} className="admins-spin" /> : <UserPlus size={15} />}
           {inviting ? "Sending..." : "Invite Admin"}
         </button>
       </form>
@@ -218,9 +260,7 @@ const Admins = () => {
             </h3>
 
             {data.registered.length === 0 ? (
-              <div className="admins-empty">
-                No registered admins yet. Invite one above to get started.
-              </div>
+              <div className="admins-empty">No registered admins yet. Invite one above.</div>
             ) : (
               <div className="admins-table">
                 <div className="admins-table-head">
@@ -241,6 +281,9 @@ const Admins = () => {
                       <div className="admins-name-block">
                         <span className="admins-name">{fullName(a)}</span>
                         <span className="admins-email">{a.email}</span>
+                        {!a.isCodeVerified && (
+                          <span className="admins-unverified">Email not verified</span>
+                        )}
                       </div>
                     </div>
 
@@ -257,11 +300,7 @@ const Admins = () => {
                           a.isActive ? "admins-pill-active" : "admins-pill-inactive"
                         }`}
                       >
-                        {a.isActive ? (
-                          <CheckCircle size={12} />
-                        ) : (
-                          <XCircle size={12} />
-                        )}
+                        {a.isActive ? <CheckCircle size={12} /> : <XCircle size={12} />}
                         {a.isActive ? "Active" : "Inactive"}
                       </span>
                     </div>
@@ -274,11 +313,7 @@ const Admins = () => {
                             : "admins-pill-denied"
                         }`}
                       >
-                        {a.canApproveDownloads ? (
-                          <ShieldCheck size={12} />
-                        ) : (
-                          <ShieldOff size={12} />
-                        )}
+                        {a.canApproveDownloads ? <ShieldCheck size={12} /> : <ShieldOff size={12} />}
                         {a.canApproveDownloads ? "Can approve" : "No approval"}
                       </span>
                     </div>
@@ -286,15 +321,29 @@ const Admins = () => {
                     <div className="admins-cell admins-cell-actions">
                       <button
                         className="admins-action-btn"
+                        onClick={() => openEdit(a)}
+                        disabled={busyId === a.id || a.role === "super_admin"}
+                        title="Edit admin"
+                      >
+                        <Pencil size={14} />
+                      </button>
+                      {!a.isCodeVerified && (
+                        <button
+                          className="admins-action-btn"
+                          onClick={() => handleResend(a)}
+                          disabled={busyId === a.id}
+                          title="Resend verification code"
+                        >
+                          <Send size={14} />
+                        </button>
+                      )}
+                      <button
+                        className="admins-action-btn"
                         onClick={() => handleTogglePermission(a)}
                         disabled={busyId === a.id || a.role === "super_admin"}
                         title="Toggle download approval"
                       >
-                        {a.canApproveDownloads ? (
-                          <ShieldOff size={14} />
-                        ) : (
-                          <ShieldCheck size={14} />
-                        )}
+                        {a.canApproveDownloads ? <ShieldOff size={14} /> : <ShieldCheck size={14} />}
                       </button>
                       <button
                         className="admins-action-btn"
@@ -307,11 +356,7 @@ const Admins = () => {
                       <button
                         className="admins-action-btn admins-action-danger"
                         onClick={() =>
-                          setConfirmDelete({
-                            type: "admin",
-                            id: a.id,
-                            email: a.email,
-                          })
+                          setConfirmDelete({ type: "admin", id: a.id, email: a.email })
                         }
                         disabled={busyId === a.id || a.role === "super_admin"}
                         title="Delete admin"
@@ -343,11 +388,7 @@ const Admins = () => {
                     <button
                       className="admins-invite-delete"
                       onClick={() =>
-                        setConfirmDelete({
-                          type: "invite",
-                          id: inv.id,
-                          email: inv.email,
-                        })
+                        setConfirmDelete({ type: "invite", id: inv.id, email: inv.email })
                       }
                       title="Cancel invite"
                     >
@@ -361,31 +402,80 @@ const Admins = () => {
         </>
       )}
 
+      {editTarget && (
+        <div className="admins-confirm-overlay" onClick={() => setEditTarget(null)}>
+          <div className="admins-confirm-card" onClick={(e) => e.stopPropagation()}>
+            <h4>Edit Admin</h4>
+            <p className="admins-edit-subtitle">
+              Editing <strong>{editTarget.email}</strong>
+            </p>
+
+            <div className="admins-edit-fields">
+              <div className="admins-edit-field">
+                <label>First Name</label>
+                <input
+                  type="text"
+                  value={editForm.firstName}
+                  onChange={(e) => setEditForm({ ...editForm, firstName: e.target.value })}
+                />
+              </div>
+              <div className="admins-edit-field">
+                <label>Middle Name</label>
+                <input
+                  type="text"
+                  value={editForm.middleName}
+                  onChange={(e) => setEditForm({ ...editForm, middleName: e.target.value })}
+                />
+              </div>
+              <div className="admins-edit-field">
+                <label>Last Name</label>
+                <input
+                  type="text"
+                  value={editForm.lastName}
+                  onChange={(e) => setEditForm({ ...editForm, lastName: e.target.value })}
+                />
+              </div>
+              <div className="admins-edit-field">
+                <label>Phone Number</label>
+                <input
+                  type="tel"
+                  value={editForm.phoneNumber}
+                  onChange={(e) => setEditForm({ ...editForm, phoneNumber: e.target.value })}
+                />
+              </div>
+            </div>
+
+            <div className="admins-confirm-actions">
+              <button className="admins-confirm-cancel" onClick={() => setEditTarget(null)}>
+                Cancel
+              </button>
+              <button
+                className="admins-confirm-save"
+                onClick={handleSaveEdit}
+                disabled={savingEdit}
+              >
+                {savingEdit ? <Loader2 size={14} className="admins-spin" /> : <Save size={14} />}
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {confirmDelete && (
-        <div
-          className="admins-confirm-overlay"
-          onClick={() => setConfirmDelete(null)}
-        >
-          <div
-            className="admins-confirm-card"
-            onClick={(e) => e.stopPropagation()}
-          >
+        <div className="admins-confirm-overlay" onClick={() => setConfirmDelete(null)}>
+          <div className="admins-confirm-card" onClick={(e) => e.stopPropagation()}>
             <h4>
-              {confirmDelete.type === "admin"
-                ? "Delete this admin?"
-                : "Cancel this invite?"}
+              {confirmDelete.type === "admin" ? "Delete this admin?" : "Cancel this invite?"}
             </h4>
             <p>
               <strong>{confirmDelete.email}</strong>{" "}
               {confirmDelete.type === "admin"
-                ? "will lose access immediately and this action cannot be undone."
+                ? "will be permanently removed. An email will be sent to confirm the deletion."
                 : "will no longer be able to register as an admin."}
             </p>
             <div className="admins-confirm-actions">
-              <button
-                className="admins-confirm-cancel"
-                onClick={() => setConfirmDelete(null)}
-              >
+              <button className="admins-confirm-cancel" onClick={() => setConfirmDelete(null)}>
                 Cancel
               </button>
               <button className="admins-confirm-delete" onClick={handleDelete}>
