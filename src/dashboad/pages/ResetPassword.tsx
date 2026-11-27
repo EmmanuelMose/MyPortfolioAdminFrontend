@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { verifyResetCode, resetPassword } from "../../Features/auth/auth";
 import { Eye, EyeOff, Lock, Mail, Key, ArrowLeft } from "lucide-react";
 import "./ResetPassword.css";
@@ -14,7 +15,6 @@ type ResetForm = {
 const ResetPassword = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const {
@@ -24,14 +24,14 @@ const ResetPassword = () => {
   } = useForm<ResetForm>({ mode: "onTouched" });
 
   const onSubmit = async (data: ResetForm) => {
-    setError("");
     setLoading(true);
     try {
       await verifyResetCode(data.email, data.code);
       await resetPassword(data.email, data.newPassword);
+      toast.success("Password reset successfully");
       navigate("/login");
     } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to reset password");
+      toast.error(err.response?.data?.message || "Failed to reset password");
     } finally {
       setLoading(false);
     }
@@ -53,8 +53,6 @@ const ResetPassword = () => {
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="reset-form" noValidate>
-            {error && <div className="reset-error">{error}</div>}
-
             <div className="reset-form-group">
               <label htmlFor="email">Email Address</label>
               <div className={`reset-input-wrapper ${errors.email ? "has-error" : ""}`}>

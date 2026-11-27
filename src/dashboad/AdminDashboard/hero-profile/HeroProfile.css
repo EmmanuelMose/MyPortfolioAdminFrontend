@@ -84,6 +84,13 @@
   color: #8a8a8a;
 }
 
+.hero-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
 .hero-preview-btn {
   display: inline-flex;
   align-items: center;
@@ -112,35 +119,114 @@
   cursor: not-allowed;
 }
 
-.hero-message {
-  padding: 0.7rem 0.95rem;
-  border-radius: 9px;
-  font-size: 0.8rem;
-  margin-bottom: 1.1rem;
-  animation: fadeInUp 0.3s ease;
+.hero-preview-btn-ghost {
+  border-color: #2a2a2a;
+  background: #0f0f0f;
+  color: #b8b8b8;
 }
 
-.hero-message.success {
-  background: rgba(66, 230, 66, 0.08);
-  border: 1px solid rgba(66, 230, 66, 0.35);
+.hero-preview-btn-ghost:hover:not(:disabled) {
+  border-color: rgba(66, 230, 66, 0.5);
   color: var(--primary);
+  background: #141414;
+  box-shadow: 0 6px 18px rgba(66, 230, 66, 0.12);
 }
 
-.hero-message.error {
-  background: rgba(255, 85, 85, 0.08);
-  border: 1px solid rgba(255, 85, 85, 0.35);
-  color: #ff7777;
+.hero-display {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 2.5rem;
+  align-items: center;
+  padding: 2.2rem;
+  border-radius: 18px;
+  border: 1px solid #1e1e1e;
+  background: linear-gradient(180deg, #0c0c0c 0%, #050505 100%);
+  animation: slideUp 0.4s ease;
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.hero-display-text {
+  min-width: 0;
+}
+
+.hero-display-greeting {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--primary);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.4px;
+}
+
+.hero-display-name {
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: var(--text);
+  line-height: 1.05;
+  letter-spacing: -1.5px;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 30px rgba(66, 230, 66, 0.15);
+}
+
+.hero-display-bio {
+  font-size: 0.95rem;
+  color: #b8b8b8;
+  line-height: 1.75;
+  margin-bottom: 1.5rem;
+  white-space: pre-line;
+}
+
+.hero-display-cv {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.4rem;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: #000000;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 18px rgba(66, 230, 66, 0.28);
+}
+
+.hero-display-cv:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 26px rgba(66, 230, 66, 0.45);
+}
+
+.hero-display-image-wrapper {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  background: #141414;
+  border: 1px solid #262626;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+.hero-display-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-display-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4a4a4a;
+  font-size: 0.85rem;
+  background: repeating-linear-gradient(
+    45deg,
+    #0e0e0e,
+    #0e0e0e 10px,
+    #141414 10px,
+    #141414 20px
+  );
 }
 
 .hero-form {
@@ -148,7 +234,7 @@
   flex-direction: column;
   gap: 1rem;
   max-width: 900px;
-  animation: slideUp 0.5s ease 0.1s both;
+  animation: slideUp 0.4s ease;
 }
 
 .hero-form-section {
@@ -332,7 +418,32 @@
 .hero-form-actions {
   display: flex;
   justify-content: flex-end;
+  gap: 0.7rem;
   padding-top: 0.2rem;
+  flex-wrap: wrap;
+}
+
+.hero-cancel-btn {
+  padding: 0.72rem 1.3rem;
+  border-radius: 10px;
+  background: transparent;
+  border: 1.5px solid #2a2a2a;
+  color: #b8b8b8;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-cancel-btn:hover:not(:disabled) {
+  border-color: rgba(255, 85, 85, 0.5);
+  color: #ff7777;
+  background: rgba(255, 85, 85, 0.06);
+}
+
+.hero-cancel-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .hero-submit-btn {
@@ -573,6 +684,22 @@
 }
 
 @media (max-width: 900px) {
+  .hero-display {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 1.6rem;
+  }
+  .hero-display-image-wrapper {
+    max-width: 300px;
+    margin: 0 auto;
+    order: -1;
+  }
+  .hero-display-name {
+    font-size: 2rem;
+  }
+  .hero-display-cv {
+    justify-content: center;
+  }
   .hero-preview-content {
     grid-template-columns: 1fr;
     text-align: center;
@@ -597,8 +724,12 @@
   .hero-profile-header h2 {
     font-size: 1.3rem;
   }
+  .hero-header-actions {
+    width: 100%;
+  }
   .hero-preview-btn {
-    align-self: flex-start;
+    flex: 1;
+    justify-content: center;
   }
   .hero-form-section {
     padding: 1rem 1rem 1.1rem;
@@ -609,11 +740,11 @@
     gap: 0.8rem;
   }
   .hero-form-actions {
-    justify-content: stretch;
+    flex-direction: column-reverse;
   }
-  .hero-submit-btn {
+  .hero-submit-btn,
+  .hero-cancel-btn {
     width: 100%;
-    min-width: 0;
   }
   .hero-preview-name {
     font-size: 1.9rem;
@@ -632,6 +763,19 @@
   }
   .hero-profile-subtitle {
     font-size: 0.76rem;
+  }
+  .hero-display {
+    padding: 1.2rem 1rem;
+  }
+  .hero-display-name {
+    font-size: 1.6rem;
+    letter-spacing: -1px;
+  }
+  .hero-display-greeting {
+    font-size: 0.82rem;
+  }
+  .hero-display-bio {
+    font-size: 0.86rem;
   }
   .hero-section-icon {
     width: 28px;

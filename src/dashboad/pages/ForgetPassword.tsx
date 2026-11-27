@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { forgotPassword, verifyResetCode, resetPassword } from "../../Features/auth/auth";
 import { Mail, Key, Lock, Eye, EyeOff, ArrowLeft, CheckCircle } from "lucide-react";
 import "./ForgetPassword.css";
@@ -10,8 +11,6 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -20,39 +19,33 @@ const ForgotPassword = () => {
   const step3 = useForm<{ newPassword: string; confirmPassword: string }>({ mode: "onTouched" });
 
   const handleSendCode = async (data: { email: string }) => {
-    setError("");
-    setSuccess("");
     setLoading(true);
     try {
       await forgotPassword(data.email);
       setEmail(data.email);
-      setSuccess("Reset code sent to your email");
+      toast.success("Reset code sent to your email");
       setStep(2);
     } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to send code");
+      toast.error(err.response?.data?.message || "Failed to send code");
     } finally {
       setLoading(false);
     }
   };
 
   const handleVerifyCode = async (data: { code: string }) => {
-    setError("");
-    setSuccess("");
     setLoading(true);
     try {
       await verifyResetCode(email, data.code);
-      setSuccess("Code verified successfully");
+      toast.success("Code verified successfully");
       setStep(3);
     } catch (err: any) {
-      setError(err.response?.data?.message || "Invalid or expired code");
+      toast.error(err.response?.data?.message || "Invalid or expired code");
     } finally {
       setLoading(false);
     }
   };
 
   const handleResetPassword = async (data: { newPassword: string; confirmPassword: string }) => {
-    setError("");
-    setSuccess("");
     if (data.newPassword !== data.confirmPassword) {
       step3.setError("confirmPassword", { message: "Passwords do not match" });
       return;
@@ -60,10 +53,10 @@ const ForgotPassword = () => {
     setLoading(true);
     try {
       await resetPassword(email, data.newPassword);
-      setSuccess("Password reset successfully. Redirecting to login...");
+      toast.success("Password reset successfully. Redirecting to login...");
       setTimeout(() => navigate("/login"), 2000);
     } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to reset password");
+      toast.error(err.response?.data?.message || "Failed to reset password");
     } finally {
       setLoading(false);
     }
@@ -93,9 +86,6 @@ const ForgotPassword = () => {
               {step > 3 ? <CheckCircle size={14} /> : 3}
             </div>
           </div>
-
-          {error && <div className="forgot-error">{error}</div>}
-          {success && <div className="forgot-success">{success}</div>}
 
           {step === 1 && (
             <form onSubmit={step1.handleSubmit(handleSendCode)} className="forgot-form" noValidate>

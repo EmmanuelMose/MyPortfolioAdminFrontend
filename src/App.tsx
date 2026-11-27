@@ -1,4 +1,5 @@
 import { BrowserRouter, useRoutes, Navigate, Outlet } from "react-router-dom";
+import { Toaster } from "sonner";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 
 import LandingPage from "./dashboad/pages/LandingPage";
@@ -8,6 +9,7 @@ import ForgotPassword from "./dashboad/pages/ForgetPassword";
 
 import AdminDashboard from "./dashboad/AdminDashboard/AdminDashboard";
 import HeroProfile from "./dashboad/AdminDashboard/hero-profile/HeroProfile";
+import Admins from "./dashboad/AdminDashboard/admins/Admins";
 
 const ProtectedRoute = () => {
   const { user } = useAuth();
@@ -40,7 +42,7 @@ const routes = [
           {
             element: <RoleRoute roles={["super_admin"]} />,
             children: [
-              { path: "admins", element: <div>Admins Page</div> },
+              { path: "admins", element: <Admins /> },
               { path: "settings", element: <div>Settings Page</div> },
               { path: "logs", element: <div>Logs Page</div> },
             ],
@@ -60,6 +62,26 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <AppRoutes />
+        <Toaster
+          position="top-right"
+          closeButton
+          duration={4000}
+          toastOptions={{
+            style: {
+              background: "#ffffff",
+              color: "#000000",
+              border: "1px solid #e5e5e5",
+              fontWeight: 500,
+              fontSize: "14px",
+              borderRadius: "10px",
+              boxShadow: "0 10px 40px rgba(0, 0, 0, 0.5)",
+            },
+            classNames: {
+              error: "sonner-toast-error",
+              success: "sonner-toast-success",
+            },
+          }}
+        />
       </BrowserRouter>
     </AuthProvider>
   );

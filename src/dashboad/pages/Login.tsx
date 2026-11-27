@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { loginUser } from "../../Features/auth/auth";
 import { useAuth } from "../../context/AuthContext";
 import { Eye, EyeOff, Mail, Lock, ArrowLeft } from "lucide-react";
@@ -13,7 +14,6 @@ const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const {
@@ -23,14 +23,21 @@ const Login = () => {
   } = useForm<LoginForm>({ mode: "onTouched" });
 
   const onSubmit = async (data: LoginForm) => {
-    setError("");
     setLoading(true);
     try {
       const response = await loginUser(data);
       login(response.user, response.token);
+      toast.success("Welcome back");
       navigate("/dashboard");
     } catch (err: any) {
-      setError(err.response?.data?.message || "Login failed");
+      const status = err?.response?.status;
+      const serverMessage = err?.response?.data?.message;
+      const message =
+        serverMessage ||
+        (status === 400 || status === 401
+          ? "Invalid email or password"
+          : err?.message || "Login failed. Please try again.");
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -61,8 +68,6 @@ const Login = () => {
           </button>
 
           <form onSubmit={handleSubmit(onSubmit)} className="login-form" noValidate>
-            {error && <div className="login-error">{error}</div>}
-
             <div className="login-form-group">
               <label htmlFor="email">Email Address</label>
               <div className={`login-input-wrapper ${errors.email ? "has-error" : ""}`}>

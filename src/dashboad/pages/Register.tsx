@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { registerUser } from "../../Features/auth/auth";
 import { Eye, EyeOff, Mail, Lock, User, Phone, ArrowLeft } from "lucide-react";
 import registerHero from "../../assets/images/register-hero.jpg";
@@ -20,7 +21,6 @@ const Register = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const {
@@ -33,14 +33,14 @@ const Register = () => {
   const password = watch("password");
 
   const onSubmit = async (data: RegisterForm) => {
-    setError("");
     setLoading(true);
     try {
       const { confirmPassword, ...payload } = data;
       await registerUser(payload);
+      toast.success("Account created. Please sign in.");
       navigate("/login");
     } catch (err: any) {
-      setError(err.response?.data?.message || "Registration failed");
+      toast.error(err.response?.data?.message || "Registration failed");
     } finally {
       setLoading(false);
     }
@@ -71,8 +71,6 @@ const Register = () => {
           </button>
 
           <form onSubmit={handleSubmit(onSubmit)} className="register-form" noValidate>
-            {error && <div className="register-error">{error}</div>}
-
             <div className="register-form-row">
               <div className="register-form-group">
                 <label htmlFor="firstName">First Name</label>
