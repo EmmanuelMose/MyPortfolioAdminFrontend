@@ -9,6 +9,7 @@ import ForgotPassword from "./dashboad/pages/ForgetPassword";
 
 import AdminDashboard from "./dashboad/AdminDashboard/AdminDashboard";
 import HeroProfile from "./dashboad/AdminDashboard/hero-profile/HeroProfile";
+import HeroSkills from "./dashboad/AdminDashboard/hero-skills/HeroSkills";
 import Admins from "./dashboad/AdminDashboard/admins/Admins";
 
 const ProtectedRoute = () => {
@@ -39,6 +40,7 @@ const routes = [
         children: [
           { index: true, element: <Navigate to="/dashboard/hero" replace /> },
           { path: "hero", element: <HeroProfile /> },
+          { path: "hero-skills", element: <HeroSkills /> },
           {
             element: <RoleRoute roles={["super_admin"]} />,
             children: [
